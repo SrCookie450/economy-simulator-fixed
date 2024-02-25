@@ -1,0 +1,23 @@
+@page "/auth/captcha"
+@model Roblox.Website.Pages.Auth.Captcha
+
+@{
+    Layout = "Shared/_Layout";
+}
+<div class="container mt-4 mb-4">
+    <div class="row">
+        <div class="col-12 col-lg-6 offset-lg-3">
+            <div class="card card-body">
+                <h3>Captcha Required</h3>
+                <p>Please complete the captcha below to gain access to the rest of this website. Sorry for the inconvenience.</p>
+                <form class="mt-4" method="post">
+                    <div class="h-captcha mt-0 mb-2" data-sitekey="@Model.siteKey" data-theme="light"></div>
+                    <input type="submit" class="btn btn-primary"/>
+                    @Html.AntiForgeryToken()
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://js.hcaptcha.com/1/api.js" async defer></script>

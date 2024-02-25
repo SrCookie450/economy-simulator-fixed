@@ -1,0 +1,43 @@
+@page "/auth/signup"
+@model Roblox.Website.Pages.Auth.Signup
+
+@{
+    Layout = "Shared/_Layout";
+    var htmlClassNames = "col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4";
+}
+<div class="container mt-4">
+    <div class="row">
+        <div class="@htmlClassNames">
+            <div class="card card-body">
+                <h2>Sign Up</h2>
+                @if (Model.applicationId != null && Model.invite == null)
+                {
+                    <p>If you already have an account you'd like to reactivate, you can <a href="/auth/login?applicationId=@Model.applicationId">login here</a>.</p>
+                }
+                @if (Model.invite != null)
+                {
+                    <p>You have been invited to this website by <span class="fw-bolder">@Model.inviterUsername</span>.</p>
+                    <p>To sign up, just enter a username and password.</p>
+                    {
+                        // Password notice only applies to invited users. Application users can recover through matrix account.
+                    }
+                    <p><span class="fw-bolder text-danger">IMPORTANT PASSWORD NOTICE:</span> You cannot recover your password if you forget it. You should use a password manager such as <a href="https://1password.com/" rel="nofollow noopener noreferrer" target="_blank">1Password</a> or <a href="https://bitwarden.com/" rel="nofollow noopener noreferrer" target="_blank">Bitwarden</a>.</p>
+                }
+                else
+                {
+                    <p>To sign up, just enter a username and password.</p>
+                }
+                @if (Model.errorMessage != null)
+                {
+                    <p class="text-danger">@Model.errorMessage</p>
+                }
+                <form method="post">
+                    <input disabled="@Model.signupDisabled" type="text" placeholder="Username" name="username" class="form-control mb-1"/>
+                    <input disabled="@Model.signupDisabled" type="password" placeholder="Password" name="password" class="form-control mb-1"/>
+                    @Html.AntiForgeryToken()
+                    <input disabled="@Model.signupDisabled" class="btn btn-primary mt-2" type="submit" value="Sign Up" id="signup-submit"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

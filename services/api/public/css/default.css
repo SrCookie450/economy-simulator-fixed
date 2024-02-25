@@ -1,0 +1,511 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300;1,400;1,600&display=swap');
+div#container-main {
+    font-family: 'Source Sans Pro',Arial,Helvetica,sans-serif;
+}
+div#BodyWrapper {
+    max-width: 970px;
+    display: block;
+    margin: 0 auto;
+    font-size: 14px;
+}
+.gotham-font div#BodyWrapper div {
+    font-size: 14px;
+}
+tr.forum-post {
+    border-bottom: 1px solid #c3c3c3;
+}
+/*****************************************************
+General Anchor
+*****************************************************/
+a.linkSmallBold, a.linkMenuSink
+{
+    font-weight: bold;
+    color: #095fb5;
+}
+
+a.linkSmall, a.LinkSmallBold, a.linkMenuSink
+{
+    color: #095fb5;
+    font-size: 0.9em;
+}
+/*
+
+a.linkSmallBold:visited, a.linkMenuSink:visited
+{
+    font-weight: normal;
+    color: #095fb5;
+}*/
+
+/*
+a.linkSmallBold:Hover, a.linkMenuSink:Hover
+{
+    color: #DD6900;
+}
+*/
+.CenterColumn a.btn-control
+{
+    margin-right: 5px;
+    color: #000;   
+}
+.CenterColumn input.btn-control,
+.CenterColumn select
+{
+    margin-right: 0px;
+}
+
+/*****************************************************
+Text and Anchor to display when a user is online
+*****************************************************/
+.userOnlineLinkBold, a.userOnlineLinkBold, a.userOnlineLinkBold:Visited, a.userOnlineLinkBold:Hover, a.userOnlineLinkBold:Link
+{
+    font-weight: bold;
+    color: #095fb5;
+}
+
+.moderatorOnlineLinkBold, a.moderatorOnlineLinkBold, a.moderatorOnlineLinkBold:Visited, a.moderatorOnlineLinkBold:Hover, a.moderatorOnlineLinkBold:Link
+{
+    font-weight: bold;
+    color: #00008B;
+}
+
+.adminOnlineLinkBold, a.adminOnlineLinkBold, a.adminOnlineLinkBold:Visited, a.adminOnlineLinkBold:Hover, a.adminOnlineLinkBold:Link
+{
+    font-weight: bold;
+    color: black;
+}
+
+
+/*****************************************************
+Text and anchors used in the navigation menu
+*****************************************************/
+#forum-nav {
+    text-align: right;
+}
+
+#forum-nav a.menuTitle
+{
+    font-weight: bold;
+    font-size: 20px; 
+    color: navy;
+}
+
+#forum-nav a.menuText
+{
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+a.menuTextLink {
+    padding: 0px 5px;
+    border-left: 1px solid black;
+}
+
+#forum-nav a.menuTextLink
+{
+    text-decoration: none;
+    font-weight: 600;
+    color: #343434;
+}
+
+#forum-nav a.menuTextLink.first {
+    border-left: none;
+}
+
+#forum-nav a.menuTextLink:hover {
+    text-decoration: underline;
+}
+
+.thread-link-outer-wrapper {
+    display: table;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+.thread-link-container {
+    height: 38px;
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
+}
+
+/*****************************************************
+Text and anchors used in the search
+*****************************************************/
+.searchPager
+{
+    font-size : 0.9em;
+    font-weight: bold;
+}
+
+.searchItem
+{
+    background-color: #DDEEFF; 
+}
+
+.searchAlternatingItem
+{
+    background-color: #FFFFFF;
+}
+
+
+/*****************************************************
+Default separator style for PostList
+*****************************************************/
+td.flatViewSpacing
+{
+    height: 1px;
+    background-color: #d8d8d8; /*#0058b1;*/
+}
+
+/*****************************************************
+Table Header and cell definitions
+*****************************************************/
+table {
+    border-spacing: 0px;
+}
+table.table {
+    border-top: none;
+}
+
+th
+{
+    background-color: #0058b1;
+}
+
+td.forumHeaderBackgroundAlternate
+{
+    background-color: #BDD6F5;
+}
+
+/*****************************************************
+Body
+*****************************************************/
+body 
+{
+    COLOR: #000000;
+    scrollbar-face-color: #DEE3E7;
+    scrollbar-highlight-color: #FFFFFF;
+    scrollbar-shadow-color: #DEE3E7;
+    scrollbar-3dlight-color: #D1D7DC;
+    scrollbar-arrow-color:  #006699;
+    scrollbar-track-color: #EFEFEF;
+    scrollbar-darkshadow-color: #98AAB1;
+}
+
+.forum-post .normalTextSmall {
+    white-space: pre-wrap;
+    overflow: hidden;
+}
+
+/*****************************************************
+Validation Text
+*****************************************************/
+.validationWarningSmall
+{
+    color: Red;
+    font-size : 0.9em;
+}
+
+/*****************************************************
+General Text
+*****************************************************/
+.normalTextSmall 
+{ 
+    font-size : 1.0em;
+}
+
+a
+{
+    color : #095fb5; 
+}
+a:visited
+{
+    color : #013DA4; 
+}
+a.btn-neutral:visited
+{
+    color: White;
+}
+
+.normalTextSmallBold
+{ 
+    font-size : 1.0em;
+    font-weight: bold;
+}
+
+.normalTextSmaller
+{
+    font-size: 0.9em;
+}
+
+.normalTextSmall, .normalTextSmallBold, .normalTextSmaller
+{ 
+    color : #000000; 
+}
+
+.normalTextSmall a, .normalTextSmallBold a, .normalTextSmaller a
+{ 
+    color : #095fb5; 
+}
+.normalTextSmall a:visited, .normalTextSmallBold a:visited, .normalTextSmaller a:visited
+{ 
+    color : #013DA4; 
+}
+
+/*****************************************************
+Text used on tables with a background
+*****************************************************/
+th .table-header-right-align,
+td .table-header-right-align {
+    text-align: right;
+}
+.tableHeaderText
+{
+    color: white;
+    /*font-size: 14px;
+    font-weight:bold;*/
+    font-size: 20px;
+    font-weight: normal;
+    padding: 5px;
+    
+    text-align: center;
+}
+
+/*****************************************************
+Main forum colors
+*****************************************************/
+td.forumRow
+{
+    background-color: #DDEEFF;
+}
+
+td.forumAlternate
+{
+    background-color: #DAE7FD;
+}
+
+/*****************************************************
+Background color and text used in threaded view
+*****************************************************/
+td.threadTitle
+{
+    background-color: #D4D9EC;
+}
+
+.threadDetailTextSmall
+{
+    color: #095fb5;
+    font-size: 0.9em;
+}
+
+.threadDetailTextSmallBold
+{
+    color: #095fb5;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+td.forumRowHighlight
+{
+    background-color: #dfe9fc;
+}
+
+/*****************************************************
+Text and links used in ForumGroupRepeater and ForumRepeater
+*****************************************************/
+.forum-table-header,
+.forum-table-header th,
+.forum-table-footer {
+    background-color: #0058b1;
+    color: white;
+    font-size: 20px;
+    font-weight: normal;
+    border-left: 1px solid white;
+}
+.forum-table-header th.first {
+    border: none!important;
+}
+tbody > tr.table-header {
+    border-left: none!important;
+}
+body .forum-table-header,
+body .forum-table-header th,
+body .forum-table-footer {
+    background-color: #2D528F;
+}
+
+.forum-table-header .forumTitle,
+.forum-table-header a.forumTitle:link,
+.forum-table-header a.forumTitle:hover,
+.forum-table-header a.forumTitle:visited,
+.forum-table-header a.linkSmallBold:link,
+.forum-table-header a.linkSmallBold:hover,
+.forum-table-header a.linkSmallBold:visited,
+.forum-table-footer a.linkSmallBold:link,
+.forum-table-footer a.linkSmallBold:hover,
+.forum-table-footer a.linkSmallBold:visited {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.forum-content-background,
+.forum-table-row {
+    background-color: #f9f9f9;
+}
+
+td.forum-centered-cell {
+    text-align: center;
+}
+
+.forum-table-row:hover {
+    background-color: #e9e9e9;
+}
+
+.gotham-font div.forumTitle
+{
+    font-size: 1.0em;
+    font-weight: bold;
+    color: #343434;
+}
+a.post-list-subject, a.post-list-subject:hover,
+a.post-list-author, a.post-list-author:hover {
+    text-decoration: none;
+    color: #343434;
+}
+
+a.last-post, a.last-post:hover {
+    text-decoration: none;
+    text-align: center;
+}
+
+a.forum-summary, a.forum-summary:hover {
+    text-decoration: none;
+    color: #343434;
+}
+
+a.forumTitle:visited, a.forumTitle:link
+{
+    font-weight: bold;
+}
+
+.forumName
+{
+    font-weight: bold;
+    font-size: 16px; 
+    text-decoration: none; 
+}
+
+.forum-margin {
+    width: 9px;
+}
+
+.post-response-options {
+    display: none;
+}
+
+.forum-post:hover .post-response-options {
+    display: inline;
+}
+
+.search-post-title:hover
+{
+    text-decoration: underline;
+}
+
+.search-post-body 
+{
+    padding: 12px 0;
+    display: inline-block;
+    *display: inline-block;
+    *zoom: 1;
+}
+/*****************************************************
+Form Elements
+*****************************************************/
+select {
+    border: 1px solid #0058b1;
+    padding: 1px;
+}
+input[type=text] {
+    border: 1px solid #0058b1;
+    padding-left: 5px;
+}
+textarea
+{
+    background-color: White;
+}
+textarea[disabled] {
+    background-color: #EBEBE4;
+}
+
+/*****************************************************
+Menu Controls
+*****************************************************/
+.btn-control.forum-btn-control-medium {
+    line-height: 20px;
+}
+A.linkMenuSink
+{
+    position: relative;
+}
+DIV.popupMenu
+{
+    border: 1px solid blue;
+}
+
+DIV.popupTitle
+{
+    color: white;
+    font-weight: bold;
+    background-color: #4455AA;
+}
+
+DIV.popupItem
+{
+    font-size: 1.0em;
+    font-weight: bold;
+    background-color: #DDEEFF;
+}
+
+/*****
+2018 Gotham Edits 
+******/
+
+
+
+
+.table > tbody > tr.forum-table-row > td {
+    padding: 9px;
+}
+
+/*****************************************************
+2018 Dark theme edits
+*****************************************************/
+
+.dark-theme #forum-nav a.menuTextLink {
+    color: white;
+}
+.dark-theme a.menuTextLink {
+    border-left: 1px solid white;
+}
+.dark-theme .normalTextSmall, .dark-theme .normalTextSmallBold, .dark-theme .normalTextSmaller {
+    color: white;
+}
+
+.dark-theme .forum-content-background, .dark-theme .forum-table-row:hover {
+    background: #393b3d;
+}
+.dark-theme .forum-content-background, .dark-theme .forum-table-row {
+    background: #232527;
+}
+.dark-theme .forumTitle {
+    color: white!important;
+}
+.dark-theme a.forum-summary, .dark-theme a.forum-summary:hover {
+    color: white;
+}
+.dark-theme tr.forum-post {
+    border-bottom: 1px solid black;
+}

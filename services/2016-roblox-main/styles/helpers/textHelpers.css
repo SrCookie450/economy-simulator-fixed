@@ -1,0 +1,60 @@
+/* Weights */
+.fw-100 {
+	font-weight: 100;
+}
+.fw-200 {
+	font-weight: 200;
+}
+.fw-300 {
+	font-weight: 300;
+}
+.fw-400 {
+	font-weight: 400;
+}
+.fw-500 {
+	font-weight: 500;
+}
+.fw-600 {
+	font-weight: 600;
+}
+.fw-700 {
+	font-weight: 700;
+}
+.fw-800 {
+	font-weight: 800;
+}
+.fw-900 {
+	font-weight: 900;
+}
+/* Colors */
+.lighten-1 {
+	color: #343434;
+}
+.lighten-2 {
+	color: #383838;
+}
+.lighten-3 {
+	color: #5e6161;
+}
+/* Sizes */
+.font-size-30 {
+	font-size: 30px !important;
+}
+.font-size-25 {
+	font-size: 25px !important;
+}
+.font-size-20 {
+	font-size: 20px;
+}
+.font-size-18 {
+	font-size: 18px;
+}
+.font-size-15 {
+	font-size: 15px;
+}
+.font-size-14 {
+	font-size: 14px;
+}
+.font-size-12 {
+	font-size: 12px;
+}

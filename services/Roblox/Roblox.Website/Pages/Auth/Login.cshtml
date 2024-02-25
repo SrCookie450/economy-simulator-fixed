@@ -1,0 +1,55 @@
+@page "/auth/login"
+@model Roblox.Website.Pages.Auth.Login
+
+@{
+    Layout = "Shared/_Layout";
+}
+
+<div class="container mt-4">
+    @if (string.IsNullOrEmpty(Model.applicationId))
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-warning">
+                    <p class="mb-0"><span class="fw-bolder">Warning:</span> No application ID is set. If your application was approved, or you signed up with an invite url, you can ignore this message.</p>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+            <div class="card card-body">
+                <h2>Login</h2>
+                @if (Model.applicationId != null)
+                {
+                    <p>If you do not have an account, you can <a href="/auth/signup?applicationId=@Model.applicationId">create one here</a>.</p>
+                }
+                else
+                {
+                    <p>If you do not have an account, you can <a href="/auth/application">create one here</a>.</p>
+                }
+                @if (Model.errorMessage != null)
+                {
+                    <p class="text-danger">@Model.errorMessage</p>
+                }
+                <form method="post">
+                    <input disabled="@Model.loginDisabled" type="text" placeholder="Username" name="username" class="form-control mb-1"/>
+                    <input disabled="@Model.loginDisabled" type="password" placeholder="Password" name="password" class="form-control mb-1"/>
+                    @if (Model.applicationId != null)
+                    {
+                        <input type="hidden" name="applicationId" value="@Model.applicationId"/>
+                    }
+                    @if (Model.resetPasswordEnabled)
+                    {
+                        <p><a href="/auth/password-reset">Reset Password</a></p>
+                    }
+                    <div class="h-captcha mt-4 mb-2" data-sitekey="@Model.siteKey" data-theme="light"></div>
+                    @Html.AntiForgeryToken()
+                    <input disabled="@Model.loginDisabled" class="btn btn-primary" type="submit" value="Login" id="login-submit"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://js.hcaptcha.com/1/api.js" async defer></script>

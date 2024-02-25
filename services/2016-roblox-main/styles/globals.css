@@ -1,0 +1,111 @@
+html,
+body {
+	padding: 0;
+	margin: 0;
+	font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	min-height: 100vh;
+}
+div#__next > div > div.container {
+	min-height: 100vh;
+}
+html > body {
+	font-family: 'Source Sans Pro', serif;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+input.form-control::placeholder {
+	color: '#fff';
+}
+
+.divider-right {
+	border-right: 1px solid #c3c3c3;
+}
+
+.divider-top,
+.divider-bottom {
+	border-top: 1px solid #c3c3c3;
+}
+.divider-top-thick {
+	border-top: 2px solid #c3c3c3;
+}
+.divider-light {
+	border-color: #ebebeb;
+}
+html a,
+p > a,
+a,
+/*a:active,*/
+.fake-link {
+	color: #0055b3; /*Orignial: #0055b3;*/
+	text-decoration: none !important;
+	cursor: pointer;
+}
+
+a.nav-link:focus, a.nav-link:hover {
+	color: white;
+}
+
+.truncate {
+	white-space: nowrap;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+}
+
+a.normal {
+	color: #000;
+}
+a.normal:hover {
+	color: '#0055b3';
+}
+
+html {
+	width: 100%;
+	overflow-x: hidden;
+}
+
+html,
+body,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+span,
+li,
+ul,
+ol,
+div {
+	line-height: normal;
+}
+
+html div.container {
+	max-width: 970px;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+.float-left {
+	float: left;
+}
+
+.float-right {
+	float: right;
+}
+
+.br-none {
+	border-radius: 0!important;
+}

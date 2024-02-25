@@ -1,0 +1,15 @@
+.headshot {
+    border-radius: 50%;
+    overflow: hidden;
+    max-width: 50px;
+    border: 1px solid #c3c3c3;
+    margin: 0 auto;
+}
+
+.gear {
+    height: 30px;
+}
+.gearDropdown {
+    bottom: -30px;
+    position: relative;
+}

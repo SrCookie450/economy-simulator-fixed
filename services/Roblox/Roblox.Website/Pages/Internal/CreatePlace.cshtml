@@ -1,0 +1,54 @@
+@page "/internal/create-place"
+@model Roblox.Website.Pages.Internal.CreatePlace
+
+
+@{
+    Layout = "Shared/_Layout";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12 col-lg-6 offset-lg-3">
+            <h3>Create a Place</h3>
+            @if (Model.successUrl != null)
+            {
+                <p class="mt-4 mb-4"><span class="text-success">Place created successfully.</span> To upload your game, click <a href="@Model.successUrl">here</a>. You should bookmark the upload URL since it is not visible elsewhere.</p>
+            }else if (Model.errorMessage != null)
+            {
+                <p class="mt-4 mb-4">
+                    <span class="text-danger">
+                        @Model.errorMessage
+                    </span>
+                </p>
+            }
+            <p>Due to the cost associated with creating each place (in server hours, disk space, place conversion, etc), place creation is limited to specific users. The requirements for your account are listed below:</p>
+            <ul>
+                <li>
+                    Your account must be at least 1 week old, and must have signed up through an application (NOT through an invite).
+                </li>
+                <li>
+                    Your account must have some activity: at least a few friends, a customized avatar, time spent playing games, etc. The specific ways we define activity are not going to be listed here, as doing so would make it easy to abuse the place creation system.
+                </li>
+            </ul>
+            <p>In addition, you should also meet these requirements (although we don't check for them, and they aren't a necessity):</p>
+            <ul>
+                <li>
+                    You should have a computer with access to Roblox studio. We do not publish our own version of Studio, so you will have to use Roblox's regular studio.
+                </li>
+                <li>
+                    You should have some experience creating Roblox games. You might run into issues like a specific lua API not working the same on our site as it does on Roblox, which would require either changes to code or removal of certain features (for example, I had to remove the data store save system in Roblox High School and replace it with an in-memory store).
+                </li>
+                <li>
+                    You should understand that everything here is still experimental. A lot of APIs, such as DataStoreService and HttpService, do not work or are not available.
+                </li>
+            </ul>
+            <div class="mt-4">
+                <p>To actually create a place, click the button below. If your account is not eligible, you will be given an error message detailing the problem.</p>
+                <form method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="submit" class="btn btn-primary" value="Create Place"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

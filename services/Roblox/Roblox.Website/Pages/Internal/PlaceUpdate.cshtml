@@ -1,0 +1,36 @@
+@page "/internal/place-update"
+@model Roblox.Website.Pages.Internal.PlaceUpdate
+
+
+@{
+    Layout = "Shared/_Layout";
+}
+
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12 col-lg-6 offset-lg-3">
+            <div class="card card-body">
+                <h3>Convert and Upload Place</h3>
+                @if (Model.errorMessage != null)
+                {
+                    <p class="text-danger">@Model.errorMessage</p>
+                }
+                @if (Model.successMessage != null)
+                {
+                    <p class="text-success">@Model.successMessage</p>
+                }
+                <p><span class="fw-bolder">NOTE: </span>This page is specifically for uploading a Roblox place that was created in regular Roblox studio.</p>
+                <p>Converting your place can take anywhere from a minute to 30 minutes depending on the quantity of assets in it. Note that many features are not yet supported, such as meshes newer than V2 (i.e. all modern meshes), R15, assetIds in lua scripts, etc. For a full list of dev info, <a href="/internal/dev">click here</a>.</p>
+                <form method="post" enctype="multipart/form-data">
+                    <p class="mb-0">Place ID</p>
+                    <input class="form-control" type="text" readonly="readonly" value="@Model.placeId"/>
+                    <p class="mb-0">RBXL file</p>
+                    <input class="form-control" type="file" name="fileToUpload"/>
+                    <input type="submit" class="btn btn-outline-success mt-4" value="Submit" />
+                    @Html.AntiForgeryToken()
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

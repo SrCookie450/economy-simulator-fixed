@@ -1,0 +1,31 @@
+@page "/internal/clothingstealer"
+@model Roblox.Website.Pages.Internal.ClothingStealer
+
+@{
+    Layout = "Shared/_Layout";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12 col-lg-6 offset-lg-3">
+            <h3>Clothing Stealer 1.0</h3>
+            @if (Model.successAssetUrl != null)
+            {
+                <p class="text-success">Success! Item available <a href="@Model.successAssetUrl">here</a>.</p>
+            }
+            @if (Model.failureMessage != null)
+            {
+                <p class="text-danger">@Model.failureMessage</p>
+            }
+            <p class="fst-italic">This used to be a discord bot feature until the discord server was discontinued.</p>
+            <p>Enter a Roblox Asset ID or URL for the item to be copied to this website. This feature currently only works on TShirts, Shirts, and Pants. Once copied, you can buy it from the ES catalog for 5 Robux.</p>
+            <form class="mt-4" method="POST">
+                <input name="uploadAssetUrl" type="text" class="form-control" placeholder="Roblox Asset ID or Roblox URL" />
+                @Html.AntiForgeryToken()
+                <div style="max-width: 100px;" class="mt-2">
+                    <input type="submit" class="form-control btn btn-primary" value="Submit"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

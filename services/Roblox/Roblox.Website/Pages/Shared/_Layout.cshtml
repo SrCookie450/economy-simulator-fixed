@@ -1,0 +1,103 @@
+@{
+    Layout = null;
+}
+<!doctype html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+      <link rel="icon" type="image/x-icon" href="https://cdn.discordapp.com/attachments/989219485099630612/1076165758708617437/ImageSix.webp">
+    @await RenderSectionAsync("MetaTags", required: false)
+</head>
+<body class="d-flex flex-column h-100">
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/contact">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/credits">Credits</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://discord.gg/aCMvJctUPu">Discord</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/tos">Terms of Service</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/privacy">Privacy</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/account-deletion">Account Deletion</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+@if (Model.isAuthenticated)
+{
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-auth bg-dark border-bottom pt-0 pb-0">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home">Roblox Home</a>
+                    </li>
+                    @{
+                        /*
+                    <li class="nav-item">
+                        <a class="nav-link" href="/internal/age">18+ Verification</a>
+                    </li>
+                    */
+                    }
+                    <li class="nav-item">
+                        <a class="nav-link" href="/internal/clothingstealer">Clothing Migrator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/internal/invite">Invite</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/internal/updates">Client Updates</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/internal/migrate-to-application">Migrate to Application</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/internal/membership">Membership Type</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/internal/collectibles?userId=@Model.userSession.userId">My Collectibles</a>
+                    </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="/admin">Admin Panel</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+}
+<main class="flex-shrink-0">
+    @RenderBody()
+</main>
+<footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+        <p class="text-muted">This website is not affiliated, endorsed, and/or sponsored by any companies, trademarks, or copyrighted names mentioned. No copyright infringement is intended.</p>
+        <p class="text-muted mb-0">&copy; @DateTime.UtcNow.Year @Roblox.Configuration.BaseUrl.Replace("https://", "").Replace("http://", "")</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>

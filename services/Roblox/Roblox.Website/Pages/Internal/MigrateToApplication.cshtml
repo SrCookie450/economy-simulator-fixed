@@ -1,0 +1,62 @@
+@page "/internal/migrate-to-application"
+@model Roblox.Website.Pages.Internal.MigrateToApplication
+
+@{
+    Layout = "Shared/_Layout";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12 col-lg-6 offset-lg-3">
+            @if (Model.alert != null)
+            {
+                <div class="alert alert-danger">
+                    <p class="mb-0">
+                        @Model.alert
+                    </p>
+                </div>
+            }
+            <h3>Migrate to Application</h3>
+            @if (Model.errorMessage != null)
+            {
+                <p class="text-danger">@Model.errorMessage</p>
+            }else if (Model.successMessage != null)
+            {
+                <p class="text-success">@Model.successMessage</p>
+            }
+            <p>Some featues are not available to invited users in order to prevent abuse. If you joined this website through an invite, you can migrate your account to an application.</p>
+            <p>Application migration is not guaranteed to work though. If your application is declined (e.g. due to inactivity), you will permanently lose access to your account. You should consult with a moderator to confirm that your application would be approved, before trying to migrate.</p>
+            <p class="mt-4">Migration is a multi-step process.</p>
+            <ul>
+                <li>
+                    First, you must click the button below to delete your invite.
+                </li>
+                <li>
+                    Next, you will have to go to the homepage, then click the blue "Application" button to fill out an application.
+                </li>
+                <li>
+                    Once your application is approved, you will be given a join url. You must click the join URL, preferably on the same browser that you are logged into this website with. If you are asked to sign up, do NOT create a new account, just click the "Login" link to login with your existing account.
+                </li>
+            </ul>
+
+            <p>After all this, you will have completed the migration from invite to application.</p>
+            <p>If you are certain you want to continue, click the button below to delete your invite. You cannot undo this action.</p>
+            <form method="post">
+                @Html.AntiForgeryToken()
+                <table class="w-100">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <input disabled="@(Model.alert != null)" type="checkbox" name="isConfirmed" value="true"/>
+                        </td>
+                        <td>
+                            I am certain I want to delete my invite.
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <input disabled="@(Model.alert != null)" type="submit" class="btn btn-warning mt-4" value="Delete Invite"/>
+            </form>
+        </div>
+    </div>
+</div>

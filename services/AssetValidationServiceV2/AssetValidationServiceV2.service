@@ -1,0 +1,22 @@
+# to view logs:
+# sudo journalctl -u AssetValidationServiceV2.service -f
+[Unit]
+Description=AssetValidationServiceV2
+After=network.service
+
+[Service]
+ExecStart=/home/website/RobloxWeb/services/AssetValidationServiceV2/AssetValidationV2
+LimitNOFILE=900000
+LimitNPROC=900000
+# Required on some systems
+WorkingDirectory=/home/website/RobloxWeb/services/AssetValidationServiceV2/
+Restart=always
+# Restart service after 1 second if service crashes
+RestartSec=5
+# Uncomment to ignore 0 exit code
+# RemainAfterExit=yes
+SyslogIdentifier=AssetValidationServiceV2
+User=website
+
+[Install]
+WantedBy=multi-user.target

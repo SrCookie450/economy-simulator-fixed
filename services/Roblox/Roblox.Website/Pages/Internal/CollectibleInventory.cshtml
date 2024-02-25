@@ -1,0 +1,66 @@
+@page "/internal/collectibles"
+@model Roblox.Website.Pages.Internal.CollectibleInventory
+
+@{
+    Layout = "Shared/_Layout";
+}
+
+<div class="container mt-4 mb-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body">
+                <!-- 
+                Please don't scrape this page. 
+                Use /apisite/inventory/v1/users/{userId}/assets/collectibles instead.
+                -->
+                @if (Model.errorMessage != null)
+                {
+                    <p class="text-danger mb-0">@Model.errorMessage</p>
+                }
+                else
+                {
+                    <h3>@Model.username</h3>
+                    <div class="row">
+                        <div class="col-12 col-lg-3">
+                            <img class="w-100 mx-auto" src="/thumbs/avatar.ashx?userId=@Model.userId"/>
+                            <p class="fw-bolder">Total RAP: @Model.totalRap.ToString("N0")</p>
+                        </div>
+                        <div class="col-12 col-lg-9">
+                            @if (Model.inventory.Count == 0)
+                            {
+                                <p class="text-center mt-4">Player does not have any collectible items.</p>
+                            }
+                            else
+                            {
+                                <div class="row">
+                                    @foreach (var item in Model.inventory)
+                                    {
+                                        <div class="col-6 col-md-4 col-lg-2 mb-2">
+                                            <div class="card">
+                                                <a href="/catalog/@item.assetId/--">
+                                                    <img class="w-100 mx-auto" src="/thumbs/asset.ashx?assetId=@item.assetId"/>
+                                                </a>
+                                                <div class="card-body">
+                                                    <p class="mb-0 fw-bolder text-truncate">@item.name</p>
+                                                    <p class="mb-0 text-truncate">RAP: @item.recentAveragePrice.ToString("N0")</p>
+                                                    @if (item.serialNumber != null)
+                                                    {
+                                                        <p class="mb-0 text-truncate">Serial: #@(item.serialNumber) of @(item.serialCount?.ToString() ?? "-")</p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="mb-0 text-truncate">UAID: @item.userAssetId</p>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,926 @@
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+	<External>null</External>
+	<External>nil</External>
+	<Item class="LocalScript" referent="RBXFD95511872E64D93B993730768AAD2B3">
+		<Properties>
+			<bool name="Disabled">false</bool>
+			<Content name="LinkedSource"><null></null></Content>
+			<string name="Name">Animate</string>
+			<string name="ScriptGuid">{0C2E6BF6-AFE6-4BAA-9650-0D7405850A49}</string>
+			<ProtectedString name="Source"><![CDATA[local Character = script.Parent
+local Humanoid = Character:WaitForChild("Humanoid")
+local pose = "Standing"
+
+local currentAnim = ""
+local currentAnimInstance = nil
+local currentAnimTrack = nil
+local currentAnimKeyframeHandler = nil
+local currentAnimSpeed = 1.0
+
+local runAnimTrack = nil
+local runAnimKeyframeHandler = nil
+
+local animTable = {}
+local animNames = { 
+	idle = 	{	
+				{ id = "http://www.roblox.com/asset/?id=507766666", weight = 1 },
+				{ id = "http://www.roblox.com/asset/?id=507766951", weight = 1 },
+				{ id = "http://www.roblox.com/asset/?id=507766388", weight = 9 }
+			},
+	walk = 	{ 	
+				{ id = "http://www.roblox.com/asset/?id=507777826", weight = 10 } 
+			}, 
+	run = 	{
+				{ id = "http://www.roblox.com/asset/?id=507767714", weight = 10 } 
+			}, 
+	swim = 	{
+				{ id = "http://www.roblox.com/asset/?id=507784897", weight = 10 } 
+			}, 
+	swimidle = 	{
+				{ id = "http://www.roblox.com/asset/?id=507785072", weight = 10 } 
+			}, 
+	jump = 	{
+				{ id = "http://www.roblox.com/asset/?id=507765000", weight = 10 } 
+			}, 
+	fall = 	{
+				{ id = "http://www.roblox.com/asset/?id=507767968", weight = 10 } 
+			}, 
+	climb = {
+				{ id = "http://www.roblox.com/asset/?id=507765644", weight = 10 } 
+			}, 
+	sit = 	{
+				{ id = "http://www.roblox.com/asset/?id=507768133", weight = 10 } 
+			},	
+	toolnone = {
+				{ id = "http://www.roblox.com/asset/?id=507768375", weight = 10 } 
+			},
+	toolslash = {
+				{ id = "http://www.roblox.com/asset/?id=507768375", weight = 10 } 
+--				{ id = "slash.xml", weight = 10 } 
+			},
+	toollunge = {
+				{ id = "http://www.roblox.com/asset/?id=507768375", weight = 10 } 
+			},
+	wave = {
+				{ id = "http://www.roblox.com/asset/?id=507770239", weight = 10 } 
+			},
+	point = {
+				{ id = "http://www.roblox.com/asset/?id=507770453", weight = 10 } 
+			},
+	dance = {
+				{ id = "http://www.roblox.com/asset/?id=507771019", weight = 10 }, 
+				{ id = "http://www.roblox.com/asset/?id=507771955", weight = 10 }, 
+				{ id = "http://www.roblox.com/asset/?id=507772104", weight = 10 } 
+			},
+	dance2 = {
+				{ id = "http://www.roblox.com/asset/?id=507776043", weight = 10 }, 
+				{ id = "http://www.roblox.com/asset/?id=507776720", weight = 10 }, 
+				{ id = "http://www.roblox.com/asset/?id=507776879", weight = 10 } 
+			},
+	dance3 = {
+				{ id = "http://www.roblox.com/asset/?id=507777268", weight = 10 }, 
+				{ id = "http://www.roblox.com/asset/?id=507777451", weight = 10 }, 
+				{ id = "http://www.roblox.com/asset/?id=507777623", weight = 10 } 
+			},
+	laugh = {
+				{ id = "http://www.roblox.com/asset/?id=507770818", weight = 10 } 
+			},
+	cheer = {
+				{ id = "http://www.roblox.com/asset/?id=507770677", weight = 10 } 
+			},
+}
+
+-- Existance in this list signifies that it is an emote, the value indicates if it is a looping emote
+local emoteNames = { wave = false, point = false, dance = true, dance2 = true, dance3 = true, laugh = false, cheer = false}
+
+math.randomseed(tick())
+
+function configureAnimationSet(name, fileList)
+	if (animTable[name] ~= nil) then
+		for _, connection in pairs(animTable[name].connections) do
+			connection:disconnect()
+		end
+	end
+	animTable[name] = {}
+	animTable[name].count = 0
+	animTable[name].totalWeight = 0	
+	animTable[name].connections = {}
+
+	local allowCustomAnimations = true
+	local AllowDisableCustomAnimsUserFlag = true
+
+	local success, msg = pcall(function()
+		AllowDisableCustomAnimsUserFlag = UserSettings():IsUserFeatureEnabled("UserAllowDisableCustomAnims")
+	end)
+
+	if (AllowDisableCustomAnimsUserFlag) then
+		local ps = game:GetService("StarterPlayer"):FindFirstChild("PlayerSettings")
+		if (ps ~= nil) then
+			allowCustomAnimations = not require(ps).UseDefaultAnimations
+		end
+	end
+
+	-- check for config values
+	local config = script:FindFirstChild(name)
+	if (allowCustomAnimations and config ~= nil) then
+		table.insert(animTable[name].connections, config.ChildAdded:connect(function(child) configureAnimationSet(name, fileList) end))
+		table.insert(animTable[name].connections, config.ChildRemoved:connect(function(child) configureAnimationSet(name, fileList) end))
+		local idx = 1
+		for _, childPart in pairs(config:GetChildren()) do
+			if (childPart:IsA("Animation")) then
+				table.insert(animTable[name].connections, childPart.Changed:connect(function(property) configureAnimationSet(name, fileList) end))
+				animTable[name][idx] = {}
+				animTable[name][idx].anim = childPart
+				local weightObject = childPart:FindFirstChild("Weight")
+				if (weightObject == nil) then
+					animTable[name][idx].weight = 1
+				else
+					animTable[name][idx].weight = weightObject.Value
+				end
+				animTable[name].count = animTable[name].count + 1
+				animTable[name].totalWeight = animTable[name].totalWeight + animTable[name][idx].weight
+				idx = idx + 1
+			end
+		end
+	end
+
+	-- fallback to defaults
+	if (animTable[name].count <= 0) then
+		for idx, anim in pairs(fileList) do
+			animTable[name][idx] = {}
+			animTable[name][idx].anim = Instance.new("Animation")
+			animTable[name][idx].anim.Name = name
+			animTable[name][idx].anim.AnimationId = anim.id
+			animTable[name][idx].weight = anim.weight
+			animTable[name].count = animTable[name].count + 1
+			animTable[name].totalWeight = animTable[name].totalWeight + anim.weight
+--			print(name .. " [" .. idx .. "] " .. anim.id .. " (" .. anim.weight .. ")")
+		end
+	end
+end
+
+-- Setup animation objects
+function scriptChildModified(child)
+	local fileList = animNames[child.Name]
+	if (fileList ~= nil) then
+		configureAnimationSet(child.Name, fileList)
+	end	
+end
+
+script.ChildAdded:connect(scriptChildModified)
+script.ChildRemoved:connect(scriptChildModified)
+
+
+for name, fileList in pairs(animNames) do 
+	configureAnimationSet(name, fileList)
+end	
+
+-- ANIMATION
+
+-- declarations
+local toolAnim = "None"
+local toolAnimTime = 0
+
+local jumpAnimTime = 0
+local jumpAnimDuration = 0.31
+
+local toolTransitionTime = 0.1
+local fallTransitionTime = 0.2
+
+-- functions
+
+function stopAllAnimations()
+	local oldAnim = currentAnim
+
+	-- return to idle if finishing an emote
+	if (emoteNames[oldAnim] ~= nil and emoteNames[oldAnim] == false) then
+		oldAnim = "idle"
+	end
+
+	currentAnim = ""
+	currentAnimInstance = nil
+	if (currentAnimKeyframeHandler ~= nil) then
+		currentAnimKeyframeHandler:disconnect()
+	end
+
+	if (currentAnimTrack ~= nil) then
+		currentAnimTrack:Stop()
+		currentAnimTrack:Destroy()
+		currentAnimTrack = nil
+	end
+
+	-- clean up walk if there is one
+	if (runAnimKeyframeHandler ~= nil) then
+		runAnimKeyframeHandler:disconnect()
+	end
+	
+	if (runAnimTrack ~= nil) then
+		runAnimTrack:Stop()
+		runAnimTrack:Destroy()
+		runAnimTrack = nil
+	end
+	
+	return oldAnim
+end
+
+local smallButNotZero = 0.0001
+function setRunSpeed(speed)
+	if speed < 0.33 then
+		currentAnimTrack:AdjustWeight(1.0)		
+		runAnimTrack:AdjustWeight(smallButNotZero)
+	elseif speed < 0.66 then
+		local weight = ((speed - 0.33) / 0.33)
+		currentAnimTrack:AdjustWeight(1.0 - weight + smallButNotZero)
+		runAnimTrack:AdjustWeight(weight + smallButNotZero)
+	else
+		currentAnimTrack:AdjustWeight(smallButNotZero)
+		runAnimTrack:AdjustWeight(1.0)
+	end
+	
+	local speedScaled = speed * 1.25
+	runAnimTrack:AdjustSpeed(speedScaled)
+	currentAnimTrack:AdjustSpeed(speedScaled)
+end
+
+
+function setAnimationSpeed(speed)
+	if speed ~= currentAnimSpeed then
+		currentAnimSpeed = speed
+		if currentAnim == "walk" then
+			setRunSpeed(speed)
+		else
+			currentAnimTrack:AdjustSpeed(currentAnimSpeed)
+		end
+	end
+end
+
+function keyFrameReachedFunc(frameName)
+	if (frameName == "End") then
+		if currentAnim == "walk" then
+			runAnimTrack.TimePosition = 0.0
+			currentAnimTrack.TimePosition = 0.0
+		else
+			local repeatAnim = currentAnim
+			-- return to idle if finishing an emote
+			if (emoteNames[repeatAnim] ~= nil and emoteNames[repeatAnim] == false) then
+				repeatAnim = "idle"
+			end
+			
+			local animSpeed = currentAnimSpeed
+			playAnimation(repeatAnim, 0.15, Humanoid)
+			setAnimationSpeed(animSpeed)
+		end
+	end
+end
+
+function rollAnimation(animName)
+	local roll = math.random(1, animTable[animName].totalWeight) 
+	local origRoll = roll
+	local idx = 1
+	while (roll > animTable[animName][idx].weight) do
+		roll = roll - animTable[animName][idx].weight
+		idx = idx + 1
+	end
+	return idx
+end
+
+function playAnimation(animName, transitionTime, humanoid) 	
+	local idx = rollAnimation(animName)
+	local anim = animTable[animName][idx].anim
+
+	-- switch animation		
+	if (anim ~= currentAnimInstance) then
+		
+		if (currentAnimTrack ~= nil) then
+			currentAnimTrack:Stop(transitionTime)
+			currentAnimTrack:Destroy()
+		end
+
+		if (runAnimTrack ~= nil) then
+			runAnimTrack:Stop(transitionTime)
+			runAnimTrack:Destroy()
+		end
+
+		currentAnimSpeed = 1.0
+	
+		-- load it to the humanoid; get AnimationTrack
+		currentAnimTrack = humanoid:LoadAnimation(anim)
+		 
+		-- play the animation
+		currentAnimTrack:Play(transitionTime)
+		currentAnim = animName
+		currentAnimInstance = anim
+
+		-- set up keyframe name triggers
+		if (currentAnimKeyframeHandler ~= nil) then
+			currentAnimKeyframeHandler:disconnect()
+		end
+		currentAnimKeyframeHandler = currentAnimTrack.KeyframeReached:connect(keyFrameReachedFunc)
+		
+		-- check to see if we need to blend a walk/run animation
+		if animName == "walk" then
+			local runAnimName = "run"
+			local runIdx = rollAnimation(runAnimName)
+
+			runAnimTrack = humanoid:LoadAnimation(animTable[runAnimName][runIdx].anim)		 
+			runAnimTrack:Play(transitionTime)		
+			
+			if (runAnimKeyframeHandler ~= nil) then
+				runAnimKeyframeHandler:disconnect()
+			end
+			runAnimKeyframeHandler = runAnimTrack.KeyframeReached:connect(keyFrameReachedFunc)	
+		end
+	end
+
+end
+
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+
+local toolAnimName = ""
+local toolAnimTrack = nil
+local toolAnimInstance = nil
+local currentToolAnimKeyframeHandler = nil
+
+function toolKeyFrameReachedFunc(frameName)
+	if (frameName == "End") then
+		playToolAnimation(toolAnimName, 0.0, Humanoid)
+	end
+end
+
+
+function playToolAnimation(animName, transitionTime, humanoid)	 		
+		local idx = rollAnimation(animName)
+		local anim = animTable[animName][idx].anim
+
+		if (toolAnimInstance ~= anim) then
+			
+			if (toolAnimTrack ~= nil) then
+				toolAnimTrack:Stop()
+				toolAnimTrack:Destroy()
+				transitionTime = 0
+			end
+					
+			-- load it to the humanoid; get AnimationTrack
+			toolAnimTrack = humanoid:LoadAnimation(anim)
+			 
+			-- play the animation
+			toolAnimTrack:Play(transitionTime)
+			toolAnimName = animName
+			toolAnimInstance = anim
+
+			currentToolAnimKeyframeHandler = toolAnimTrack.KeyframeReached:connect(toolKeyFrameReachedFunc)
+		end
+end
+
+function stopToolAnimations()
+	local oldAnim = toolAnimName
+
+	if (currentToolAnimKeyframeHandler ~= nil) then
+		currentToolAnimKeyframeHandler:disconnect()
+	end
+
+	toolAnimName = ""
+	toolAnimInstance = nil
+	if (toolAnimTrack ~= nil) then
+		toolAnimTrack:Stop()
+		toolAnimTrack:Destroy()
+		toolAnimTrack = nil
+	end
+
+	return oldAnim
+end
+
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+-- STATE CHANGE HANDLERS
+
+function onRunning(speed)
+	if speed > 0.5 then
+		local scale = 16.0
+		playAnimation("walk", 0.1, Humanoid)
+		setAnimationSpeed(speed / scale)
+		pose = "Running"
+	else
+		if emoteNames[currentAnim] == nil then
+			playAnimation("idle", 0.1, Humanoid)
+			pose = "Standing"
+		end
+	end
+end
+
+function onDied()
+	pose = "Dead"
+end
+
+function onJumping()
+	playAnimation("jump", 0.1, Humanoid)
+	jumpAnimTime = jumpAnimDuration
+	pose = "Jumping"
+end
+
+function onClimbing(speed)
+	local scale = 5.0
+	playAnimation("climb", 0.1, Humanoid)
+	setAnimationSpeed(speed / scale)
+	pose = "Climbing"
+end
+
+function onGettingUp()
+	pose = "GettingUp"
+end
+
+function onFreeFall()
+	if (jumpAnimTime <= 0) then
+		playAnimation("fall", fallTransitionTime, Humanoid)
+	end
+	pose = "FreeFall"
+end
+
+function onFallingDown()
+	pose = "FallingDown"
+end
+
+function onSeated()
+	pose = "Seated"
+end
+
+function onPlatformStanding()
+	pose = "PlatformStanding"
+end
+
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+
+function onSwimming(speed)
+	if speed > 1.00 then
+		local scale = 10.0
+		playAnimation("swim", 0.4, Humanoid)
+		setAnimationSpeed(speed / scale)
+		pose = "Swimming"
+	else
+		playAnimation("swimidle", 0.4, Humanoid)
+		pose = "Standing"
+	end
+end
+
+function animateTool()
+	if (toolAnim == "None") then
+		playToolAnimation("toolnone", toolTransitionTime, Humanoid)
+		return
+	end
+
+	if (toolAnim == "Slash") then
+		playToolAnimation("toolslash", 0, Humanoid)
+		return
+	end
+
+	if (toolAnim == "Lunge") then
+		playToolAnimation("toollunge", 0, Humanoid)
+		return
+	end
+end
+
+function getToolAnim(tool)
+	for _, c in ipairs(tool:GetChildren()) do
+		if c.Name == "toolanim" and c.className == "StringValue" then
+			return c
+		end
+	end
+	return nil
+end
+
+local lastTick = 0
+
+function stepAnimate(currentTime)
+	local amplitude = 1
+	local frequency = 1
+  	local deltaTime = currentTime - lastTick
+  	lastTick = currentTime
+
+	local climbFudge = 0
+	local setAngles = false
+
+  	if (jumpAnimTime > 0) then
+  		jumpAnimTime = jumpAnimTime - deltaTime
+  	end
+
+	if (pose == "FreeFall" and jumpAnimTime <= 0) then
+		playAnimation("fall", fallTransitionTime, Humanoid)
+	elseif (pose == "Seated") then
+		playAnimation("sit", 0.5, Humanoid)
+		return
+	elseif (pose == "Running") then
+		playAnimation("walk", 0.1, Humanoid)
+	elseif (pose == "Dead" or pose == "GettingUp" or pose == "FallingDown" or pose == "Seated" or pose == "PlatformStanding") then
+		stopAllAnimations()
+		amplitude = 0.1
+		frequency = 1
+		setAngles = true
+	end
+
+	-- Tool Animation handling
+	local tool = Character:FindFirstChildOfClass("Tool")
+	if tool and (tool.RequiresHandle or tool:FindFirstChild("Handle")) then
+	
+		local animStringValueObject = getToolAnim(tool)
+
+		if animStringValueObject then
+			toolAnim = animStringValueObject.Value
+			-- message recieved, delete StringValue
+			animStringValueObject.Parent = nil
+			toolAnimTime = currentTime + .3
+		end
+
+		if currentTime > toolAnimTime then
+			toolAnimTime = 0
+			toolAnim = "None"
+		end
+
+		animateTool()		
+	else
+		stopToolAnimations()
+		toolAnim = "None"
+		toolAnimInstance = nil
+		toolAnimTime = 0
+	end
+end
+
+-- connect events
+Humanoid.Died:connect(onDied)
+Humanoid.Running:connect(onRunning)
+Humanoid.Jumping:connect(onJumping)
+Humanoid.Climbing:connect(onClimbing)
+Humanoid.GettingUp:connect(onGettingUp)
+Humanoid.FreeFalling:connect(onFreeFall)
+Humanoid.FallingDown:connect(onFallingDown)
+Humanoid.Seated:connect(onSeated)
+Humanoid.PlatformStanding:connect(onPlatformStanding)
+Humanoid.Swimming:connect(onSwimming)
+
+-- setup emote chat hook
+game:GetService("Players").LocalPlayer.Chatted:connect(function(msg)
+	local emote = ""
+	if (string.sub(msg, 1, 3) == "/e ") then
+		emote = string.sub(msg, 4)
+	elseif (string.sub(msg, 1, 7) == "/emote ") then
+		emote = string.sub(msg, 8)
+	end
+	
+	if (pose == "Standing" and emoteNames[emote] ~= nil) then
+		playAnimation(emote, 0.1, Humanoid)
+	end
+end)
+
+
+
+-- initialize to idle
+playAnimation("idle", 0.1, Humanoid)
+pose = "Standing"
+
+-- loop to handle timed state transitions and tool animations
+while Character.Parent ~= nil do
+	local _, currentGameTime = wait(0.1)
+	stepAnimate(currentGameTime)
+end
+
+]]></ProtectedString>
+		</Properties>
+		<Item class="StringValue" referent="RBX5B1F6980A1B540B4A7B1E83E5416C640">
+			<Properties>
+				<string name="Name">sit</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBX387E841527584E8B9A30FF2AA4DA601F">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=507768133</url></Content>
+					<string name="Name">SitAnim</string>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBX727AEDDB03A14D6DB1DFDABB83FCC519">
+			<Properties>
+				<string name="Name">toollunge</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBX023BB90861654304A02A556B4FA73F50">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=507768375</url></Content>
+					<string name="Name">ToolLungeAnim</string>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBX79A7DBDACEAA4828948248A2E2968791">
+			<Properties>
+				<string name="Name">toolslash</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBX82C5468C08EC42AAB271A6B7835DE2E7">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=507768375</url></Content>
+					<string name="Name">ToolSlashAnim</string>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBX9C2485FB655941E78E8D074D658B9C1A">
+			<Properties>
+				<string name="Name">toolnone</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBX9749DC290330441DB8235D07FEED6286">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=507768375</url></Content>
+					<string name="Name">ToolNoneAnim</string>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBXFCB1180C767C4C75AA5303D111C5EDAE">
+			<Properties>
+				<string name="Name">wave</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBXA9110E71C39A4CB3B44FFB4145AD5965">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=507770239</url></Content>
+					<string name="Name">WaveAnim</string>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBXEF07281FF07E403F924863DF1DCD6C96">
+			<Properties>
+				<string name="Name">laugh</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBX442B5F85731F4ADC80D0E3295D882663">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=507770818</url></Content>
+					<string name="Name">LaughAnim</string>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBX311DE592AA6A486CA2C53B8496CB446D">
+			<Properties>
+				<string name="Name">point</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBX232CCD43F70C4C52A899A5D333787999">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=507770453</url></Content>
+					<string name="Name">PointAnim</string>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBX0E1A24F9412B4714A1F265219BE768D7">
+			<Properties>
+				<string name="Name">cheer</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBXE6E2419F6746436FBD3F9CDC0789C0DC">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=507770677</url></Content>
+					<string name="Name">CheerAnim</string>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBX989C3D69CB6944E29D9ADF93262F4EB6">
+			<Properties>
+				<string name="Name">dance</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBX58959F32B7F24768927423376446C98D">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=507771019</url></Content>
+					<string name="Name">Animation1</string>
+				</Properties>
+				<Item class="NumberValue" referent="RBX3D3FA6E33D82469984282D73EF7AB7F4">
+					<Properties>
+						<string name="Name">Weight</string>
+						<double name="Value">10</double>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="Animation" referent="RBX9D8CC6FECFD24B769CC689AFDB47D8FF">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=507771955</url></Content>
+					<string name="Name">Animation2</string>
+				</Properties>
+				<Item class="NumberValue" referent="RBX2BAC58B4601248CCB97AF87868AD5E3A">
+					<Properties>
+						<string name="Name">Weight</string>
+						<double name="Value">10</double>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="Animation" referent="RBXD77349B8B9B34DBB92171DCB77DEF3B6">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=507772104</url></Content>
+					<string name="Name">Animation3</string>
+				</Properties>
+				<Item class="NumberValue" referent="RBXC5F059B269094B44AE94A5E24069AE36">
+					<Properties>
+						<string name="Name">Weight</string>
+						<double name="Value">10</double>
+					</Properties>
+				</Item>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBXDCA894821C1C43C29A8E69213ABAF0C2">
+			<Properties>
+				<string name="Name">dance2</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBXFD936CB22D844B2CAD7197D1B9429DFA">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=507776043</url></Content>
+					<string name="Name">Animation1</string>
+				</Properties>
+				<Item class="NumberValue" referent="RBXB6723F6196284C67A7AAC39939A85D11">
+					<Properties>
+						<string name="Name">Weight</string>
+						<double name="Value">10</double>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="Animation" referent="RBX9112F3A535C44B9ABCE7AA807675AA6A">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=507776720</url></Content>
+					<string name="Name">Animation2</string>
+				</Properties>
+				<Item class="NumberValue" referent="RBX7F6BDDD48D8C4251BE8D99774952933C">
+					<Properties>
+						<string name="Name">Weight</string>
+						<double name="Value">10</double>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="Animation" referent="RBXECA8D92D0471490AAD64661C32A43367">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=507776879</url></Content>
+					<string name="Name">Animation3</string>
+				</Properties>
+				<Item class="NumberValue" referent="RBX27292210EEBA4F27A8FB0843F026EE4F">
+					<Properties>
+						<string name="Name">Weight</string>
+						<double name="Value">10</double>
+					</Properties>
+				</Item>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBX57514E0711254594A9085A5EE2D45F7A">
+			<Properties>
+				<string name="Name">dance3</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBX0EAF5F17919E449FAAABF66BB4904838">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=507777268</url></Content>
+					<string name="Name">Animation1</string>
+				</Properties>
+				<Item class="NumberValue" referent="RBXD189CD2D5A5D48C9894919F5566D0A4A">
+					<Properties>
+						<string name="Name">Weight</string>
+						<double name="Value">10</double>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="Animation" referent="RBXF51F24318B4545A68D1C2E31149DC52C">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=507777451</url></Content>
+					<string name="Name">Animation2</string>
+				</Properties>
+				<Item class="NumberValue" referent="RBX4341E3DA03694D25A291BD0AEC8D3336">
+					<Properties>
+						<string name="Name">Weight</string>
+						<double name="Value">10</double>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="Animation" referent="RBX17076B4EA43143EDB2917FB14E3EA1CD">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=507777623</url></Content>
+					<string name="Name">Animation3</string>
+				</Properties>
+				<Item class="NumberValue" referent="RBX69EA866C17F04F08BF08367EE18F4189">
+					<Properties>
+						<string name="Name">Weight</string>
+						<double name="Value">10</double>
+					</Properties>
+				</Item>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBX9F46EA3B91824EA59BF4DB59D020E564">
+			<Properties>
+				<string name="Name">idle</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBXBB2ECAD99B884D6F8063E41564EC8A5E">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=656117400</url></Content>
+					<string name="Name">Animation1</string>
+				</Properties>
+				<Item class="NumberValue" referent="RBX1FFB76B6D16E4DCF82067B164BFA68D0">
+					<Properties>
+						<string name="Name">Weight</string>
+						<double name="Value">9</double>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="Animation" referent="RBX59CA7131FD9646DB859692C06C0017BE">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=656118341</url></Content>
+					<string name="Name">Animation2</string>
+				</Properties>
+				<Item class="NumberValue" referent="RBXCD3F60F091C746FA9722AA89DA7A4D52">
+					<Properties>
+						<string name="Name">Weight</string>
+						<double name="Value">1</double>
+					</Properties>
+				</Item>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBXA8EE8D95F0A24ADC85DCA847F45E2E8C">
+			<Properties>
+				<string name="Name">jump</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBXB1526B37A9E547008CFFF3DE2C5FE8FC">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=656117878</url></Content>
+					<string name="Name">JumpAnim</string>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBX3C00438C51C5451586CDB7756435B4E4">
+			<Properties>
+				<string name="Name">swim</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBX3652C64D14EE45FB811326513E241D72">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=656119721</url></Content>
+					<string name="Name">Swim</string>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBXDAB611054CAC4BAD960A3F4BDC0C4654">
+			<Properties>
+				<string name="Name">swimidle</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBX1B80F91D1C314775ADFE10BFC08E8348">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=656121397</url></Content>
+					<string name="Name">SwimIdle</string>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBXEC1A3621F26A432E912A50A55C8BF20A">
+			<Properties>
+				<string name="Name">fall</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBX85100E14439D46A5BFA0F2282C89F79B">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=656115606</url></Content>
+					<string name="Name">FallAnim</string>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBX027117071A9041FAAE0F83992142BAC0">
+			<Properties>
+				<string name="Name">walk</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBX47BD141FE11549F7A5CEAFDC3861BA69">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=656121766</url></Content>
+					<string name="Name">RunAnim</string>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBX456A3C7C58A540849F29174307F352F9">
+			<Properties>
+				<string name="Name">climb</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBX8ACBDC0277F04243BD78F050E241C5A8">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=656114359</url></Content>
+					<string name="Name">ClimbAnim</string>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="StringValue" referent="RBXA168AB8EE07146859D4AE84BB4E91B60">
+			<Properties>
+				<string name="Name">run</string>
+				<string name="Value"></string>
+			</Properties>
+			<Item class="Animation" referent="RBX0F05F6BC259947ECA2FC274C605D8A2C">
+				<Properties>
+					<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=656118852</url></Content>
+					<string name="Name">RunAnim</string>
+				</Properties>
+			</Item>
+		</Item>
+	</Item>
+</roblox>

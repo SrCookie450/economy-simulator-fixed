@@ -1,0 +1,56 @@
+.chatEntry {
+    height: 40px;
+    padding-left: 4px;
+    padding-right: 4px;
+    cursor: pointer;
+    /*border-bottom: 1px solid #e0e0e0;*/
+}
+
+.chatEntry:hover {
+    background: #f3f3f3;
+}
+
+.chatHeadshotColumn {
+    height: 30px;
+    width: 50px;
+    display: inline-block;
+}
+
+.chatHeadshot {
+    display: block;
+    margin: 0 auto;
+
+    height: 30px;
+    width: 30px;
+    overflow: hidden;
+    border: 1px solid #c3c3c3;
+}
+
+.chatHeadshotImage {
+    height: 30px;
+    width: 30px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.chatLatestMessage {
+    display: inline-block;
+    width: calc(100% - 50px);
+}
+
+.chatUsername {
+    margin-bottom: 0;
+    position: relative;
+    top: 1px;
+    font-size: 13px;
+}
+
+.chatMessage {
+    position: relative;
+    margin-bottom: 0;
+    top: 0;
+}
+
+.chatMessageUnread {
+    font-weight: 700;
+}

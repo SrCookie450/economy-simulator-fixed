@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <NoWarn>8618</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Roblox.Logging\Roblox.Logging.csproj" />
+      <ProjectReference Include="..\Roblox.Models\Roblox.Models.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,12 @@
+api/public
+api/storage
+api/node_modules
+Roblox/**/bin
+Roblox/**/obj
+admin/node_modules
+# unused services
+2021-roblox
+AssetValidationService
+deployment
+economy-chat
+game-server

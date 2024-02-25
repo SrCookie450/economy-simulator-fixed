@@ -1,0 +1,182 @@
+@page "/auth/home"
+@model Roblox.Website.Pages.Home
+
+@{
+    Layout = "Shared/_Layout";
+}
+
+<style>
+    .navbar-auth {
+        margin-bottom:  -1px;
+    }
+    body {
+        overflow-x:  hidden;
+    }
+    #carouselIndicators {
+        background:  #000;
+    }
+    .carousel-inner {
+        opacity: 0.5;
+    }
+    img.c-home {
+        max-height: 60vh;
+        min-height: 370px;
+        object-fit: cover;
+    }
+    .carousel-text {
+        z-index: 3;
+        position: relative;
+        top: 0;
+        height: 0;
+        overflow: visible;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+    }
+    .carousel-text h1 {
+        font-size:  5rem;
+        color:  #fff;
+        padding-top: 1rem;
+    }
+    .carousel-text p {
+        color:  #fff;
+        font-weight: 500;
+    }
+    
+    .container-one {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+    }
+    .selling-points > li {
+        margin: 1rem 0;
+    }
+</style>
+
+@section MetaTags {
+    <title>Relive 2016 with economy-simulator.org</title>
+    <meta name="description" content="Relive 2016. Free, no invite keys required, and completely browser based. The most secure and private website of its kind."/>
+    <meta name="twitter:card" content="summary" />
+    <meta property="og:url" content="economy-simulator.org" />
+    <meta property="og:title" content="Relive 2016 with economy-simulator.org" />
+    <meta property="og:description" content="Relive 2016. Free, no invite keys required, and completely browser based. The most secure and private website of its kind." />
+    <meta property="og:image" content="/UnsecuredContent/ImageOne.webp" />
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="carousel-text">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>Relive 2016.</h1>
+                        <p>Free, no invite keys required, and completely browser based. The most secure and private website of its kind.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="carouselIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="3" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="4" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="5" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="/UnsecuredContent/ImageFive.webp" class="c-home d-block w-100" alt="An in game screenshot">
+                </div>
+                <div class="carousel-item">
+                    <img src="/UnsecuredContent/ImageOne.webp" class="c-home d-block w-100" alt="An in game screenshot">
+                </div>
+                <div class="carousel-item">
+                    <img src="/UnsecuredContent/ImageTwo.webp" class="c-home d-block w-100" alt="An in game screenshot">
+                </div>
+                <div class="carousel-item">
+                    <img src="/UnsecuredContent/ImageThree.webp" class="c-home d-block w-100" alt="An in game screenshot">
+                </div>
+                <div class="carousel-item">
+                    <img src="/UnsecuredContent/ImageFour.webp" class="c-home d-block w-100" alt="An in game screenshot">
+                </div>
+                <div class="carousel-item">
+                    <img src="/UnsecuredContent/ImageSix.webp" class="c-home d-block w-100" alt="An in game screenshot">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="container container-one">
+    <div class="row">
+        <div class="col-12">
+            <h3 class="text-center">How do I join?</h3>
+            <p class="text-center">You have to fill out an application to join. This is done to prevent bots and other malicious players from joining. Click the button below to fill out an application.</p>
+            <p class="text-center">
+                <a href="/auth/application" class="btn btn-primary">Application</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container-one bg-dark text-light">
+    <div class="container container-one">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="mb-4">What makes this place different?</h3>
+                <div class="row mt-4 mb-4">
+                    <div class="col-2 col-md-1">
+                        <h1 class="text-center">🔑</h1>
+                    </div>
+                    <div class="col-10 col-md-11">
+                        <p><span class="fw-bolder">No invite key required. </span>You don't need to be in the right friend group, constantly track discord servers, or buy keys from people - all you have to do is fill out an application to join.</p>
+                    </div>
+                </div>
+                <div class="row mt-4 mb-4">
+                    <div class="col-2 col-md-1">
+                        <h1 class="text-center">🔒</h1>
+                    </div>
+                    <div class="col-10 col-md-11">
+                        <p><span class="fw-bolder">A focus on privacy and security. </span>The game client is played entirely through your web browser, eliminating many potential attacks (such as remote code execution, resource exhaustion, and VPN bypass attempts). Your IP is only stored in a hashed format temporarily when you perform certain actions, and it is never directly linked to your account(s) on the website. You also do not have to provide any personal information, other than a link to your profile on a social media website.</p>
+                    </div>
+                </div>
+                <div class="row mt-4 mb-4">
+                    <div class="col-2 col-md-1">
+                        <h1 class="text-center">💬</h1>
+                    </div>
+                    <div class="col-10 col-md-11">
+                        <p><span class="fw-bolder">We moderate at all times. </span>We always have staff working, you could possibly work for this site too one day if you're active enough!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container container-one">
+    <div class="row">
+        <div class="col-12">
+            <h3>Privacy Taken Seriously.</h3>
+            <ul class="selling-points">
+                <li>
+                    <span class="fw-bolder">You don't have to provide any personal information. </span>The only thing we ask for during the application process is a link to your profile on a social media website such as Twitter or YouTube - this is only done to verify that you are not trying to abuse the site.
+                </li>
+                <li>
+                    <span class="fw-bolder">VPN use encouraged. </span>We highly recommend players use VPNs if they are able to - it helps you out a lot in the event that an exploit is discovered or our database is breached.
+                </li>
+                <li>
+                    <span class="fw-bolder">Secure game servers. </span>Our game server software has been modified to not directly see the IPs of players connecting to them. This is done with the help of nginx. Cloudflare sends your request to our VPS, which is then processed by nginx. Nginx then passes your request to the game server. Our game server program receives a local IP address from nginx, and not your IP address directly. This means that if someone discovers (and abuses) a severe vulnerability in our game server software, they would not be able to collect IP addresses of users.
+                </li>
+                <li>
+                    <span class="fw-bolder">IP Addresses are hashed and only stored temporarily. </span>Your IP is only stored in a hashed format when you perform certain actions, and it is not directly linked with your website account. Your IP is only ever saved for a maximum of 24 hours, after which it is deleted automatically from where it is stored (usually Redis - IPs are deleted once they expire, which can be between 5 minutes and 24 hours depending on the task you perform).
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

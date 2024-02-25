@@ -1,0 +1,73 @@
+@page "/internal/invite"
+@model Roblox.Website.Pages.Internal.Invite
+
+@{
+    Layout = "Shared/_Layout";
+}
+
+
+@section MetaTags {
+    <title>Invite User</title>
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h3>Invite</h3>
+            <p>If you signed up with an application, you can invite 1 user per 24 hour period. If you have an unused invite, you cannot create another one until that unused invite is used. Invites can only be used to register accounts - they cannot be used to reactivate accounts created before the application system was introduced.</p>
+            @if (Model.errorMessage != null)
+            {
+                <p class="text-danger">@Model.errorMessage</p>
+            }
+            @if (Model.application == null)
+            {
+                <p>Status: <span class="text-danger">Not Available</span></p>
+                @if (Model.wasInvited)
+                {
+                    <p>You were invited to this site, which means you cannot invite other users.</p>
+                }
+            }
+            else
+            {
+                <form method="POST">
+                    <input disabled="@(!Model.canCreateInvite)" type="submit" class="btn btn-primary mt-1 mb-4" value="Create Invite" />
+                    <input type="hidden" name="action" value="CreateInvite" />
+                    @Html.AntiForgeryToken()
+                </form>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>URL</th>
+                        <th>Used?</th>
+                        <th>Created</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if (Model.sentInvites != null && Model.sentInvites.Any())
+                    {
+                        @foreach (var invite in Model.sentInvites)
+                        {
+                            <tr>
+                                <td>http://economy-simulator.org/auth/signup?inviteId=@invite.id</td>
+                                @if (invite.userId == null)
+                                {
+                                    <td>No</td>
+                                }
+                                else
+                                {
+                                    <td><a href="/users/@invite.userId/profile">Yes, By #@invite.userId</a></td>
+                                }
+                                <td>@invite.createdAt.ToString("R")</td>
+                            </tr>
+                        }
+                    }
+                    </tbody>
+                </table>
+                @if (Model.sentInvites == null || !Model.sentInvites.Any())
+                {
+                    <p>You have not created any invites.</p>
+                }
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+config.json
+cookies.txt
+rcc-docker
+*.tar
+# added either manually or by github actions/jenkins/etc
+gs-config.json
+dist
+rcccid
+rcccid-*
+place-conversion-data
+
+tmp_place_file.rbxl
+tmp_place_file_out.rbxl

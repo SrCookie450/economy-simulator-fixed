@@ -1,0 +1,39 @@
+@page "/internal/report-abuse"
+@using Roblox.Models.AbuseReport
+@model Roblox.Website.Pages.Internal.ReportAbuse
+
+@{
+    Layout = "Shared/_Layout";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12 col-lg-6 offset-lg-3">
+            <h3>Report Abuse</h3>
+            @if (Model.successMessage != null)
+            {
+                <p class="text-success">@Model.successMessage</p>
+            }
+            @if (Model.failureMessage != null)
+            {
+                <p class="text-danger">@Model.failureMessage</p>
+            }
+            <p>Fill out the form below to report an abusive player. Make sure you read all fields carefully - if your report is invalid, it will be deleted. We will try to act on your report as soon as possible.</p>
+            <form class="mt-4" method="POST">
+                <label>Select a Report Reason</label>
+                <select class="form-control" name="reportReason">
+                    <option value="None">None</option>
+                    <option value="@AbuseReportReason.BadChatMessagesInGame">In-Game Chat (harrasment, slurs, etc)</option>
+                    <option value="@AbuseReportReason.BadPrivateMessage">Private Message</option>
+                </select>
+                <label class="mt-4">Enter a report message. Try to include as much detail as possible, such as names of users involved and links to screenshots (if applicable).</label>
+                <textarea name="reportMessage" type="text" class="form-control" placeholder="Roblox Asset ID or Roblox URL" rows="5" maxlength="1000">@(Model.reportMessage ?? "")</textarea>
+                <p class="fst-italic mt-2">If you need to include images, upload them to a site such as <a href="https://imgur.com/upload" rel="noopener nofollow noreferrer" target="_blank">imgur</a>, <a href="https://imgbb.com/" rel="noopener nofollow noreferrer" target="_blank">imgbb</a>, or discord, then paste a link to them.</p>
+                @Html.AntiForgeryToken()
+                <div style="max-width: 100px;" class="mt-2">
+                    <input type="submit" class="form-control btn btn-primary" value="Submit"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

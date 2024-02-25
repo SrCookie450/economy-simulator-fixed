@@ -1,0 +1,1 @@
+module.exports = JSON.parse(require('fs').readFileSync('./config.json').toString()).knex;

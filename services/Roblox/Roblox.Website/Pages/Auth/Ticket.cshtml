@@ -1,0 +1,33 @@
+@page "/auth/ticket"
+@model Roblox.Website.Pages.Auth.Ticket
+
+@{
+    Layout = "Shared/_Layout";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12 col-lg-6 offset-lg-3">
+            <div class="card card-body">
+                <h3>Support Ticket</h3>
+                <p>Fill out the form below to open a support ticket. After completing the form, you will be given a URL to view the status of your ticket.</p>
+                @if (Model.errorMessage != null)
+                {
+                    <p class="text-danger">@Model.errorMessage</p>
+                }
+                <div class="mt-4">
+                    <form method="post">
+                        <input type="hidden" name="action" value="SubmitNewTicket" />
+                        <input maxlength="100" type="text" name="subject" class="form-control" placeholder="Subject" />
+                        <textarea maxlength="1000" name="body" rows="8" class="form-control w-100 mt-2" placeholder="Ticket body. Include details that may be relevant, such as your account username, your browser, specific URLs, etc."></textarea>
+                        <div class="h-captcha mt-4 mb-2" data-sitekey="@Model.siteKey" data-theme="light"></div>
+                        @Html.AntiForgeryToken()
+                        <input class="btn btn-primary" type="submit" value="Submit" id="login-submit"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://js.hcaptcha.com/1/api.js" async defer></script>

@@ -1,0 +1,54 @@
+@page "/user-sponsorship/{userAdType}"
+@model Roblox.Website.Pages.UserSponsorship
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+@if (Model.ad == null)
+{
+}
+else
+{
+    <head>
+        <title>
+            Roblox.com
+        </title>
+        <style type="text/css">
+            body { margin: 0; }
+            body.banner { text-align: center; }
+            a
+            {
+                color: gray;
+                text-decoration: none;
+            }
+            a.ad { display: inline-block; }
+            body.other a.ad { display: block; }
+            a.ad img
+            {
+                display: block;
+                border: none;
+            }
+            a:hover { text-decoration: underline; }
+        </style>
+
+
+    </head>
+    <body class="abp banner">
+    <a class="ad" title="@Model.ad.name" href="@Model.redirectUrl" target="_top">
+        <img src="@Model.imageUrl" alt="@Model.ad.name" height="@Model.ad.height" width="@Model.ad.width"/>
+    </a>
+    @if (false)
+    {
+        <div class="ad-annotations" style="width: 728px">
+            <span class="ad-identification">
+                <span class="ad-identification-text">Advertisement</span>
+            </span>
+            <a class="BadAdButton" target="_top" href="/abusereport/Asset?id=@Model.ad.id" title="click to report an offensive ad">Report</a>
+        </div>
+    }
+    </body>
+}
+</html>

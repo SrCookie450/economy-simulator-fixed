@@ -1,0 +1,60 @@
+@page "/Feeds/GetUserFeed"
+@using System.Globalization
+@using Roblox.Models.Assets
+@model Roblox.Website.Views.UserFeed
+
+@{
+    Layout = null;
+}
+
+@{
+    // https://stackoverflow.com/questions/1037839/how-to-force-link-from-iframe-to-be-opened-in-the-parent-window
+}
+<base target="_parent" />
+<ul class="vlist feeds">
+    @if (Model.feedList != null)
+    {
+        @foreach (var item in Model.feedList)
+        {
+            <li class="list-item">
+                <a href="/users/@item.user.id/profile" class="avatar avatar-headshot-md list-header">
+                    @if (item.type == CreatorType.User)
+                    {
+                        <img src="/Thumbs/Avatar.ashx?userId=@item.user.id" class="avatar-card-image" alt="@item.user.name's Roblox Avatar"/>
+                    }
+                    else
+                    {
+                        <img src="@item.group?.image" class="header-thumb" alt="@item.group?.name's Group Icon"/>
+                    }
+                </a>
+                <div class="list-body">
+                    <p class="list-content">
+                        @if (item.type == CreatorType.User)
+                        {
+                            <a href="/users/@item.user.id/profile" class="text-name">
+                                @item.user.name
+                            </a>
+                        }
+                        else if (item.group != null)
+                        {
+                            <a href="/My/Groups.aspx?gid=@item.group.id">
+                                @item.group.name
+                            </a>
+                        }
+                        <p class="feedtext linkify">&QUOT;@item.content&quot;</p>
+                         @if (item.type == CreatorType.Group)
+                         {
+                             <span>(posted by <a href="/users/@item.user.id/profile">@item.user.name</a>)</span>
+                         }
+                    </p>
+                    <span class="xsmall text-date-hint">
+                        @item.created.ToString("MMM d, yyyy h:mm tt", CultureInfo.InvariantCulture)
+                    </span>
+                    <a href="/abusereport/Feed?id=@item.feedId&redirectUrl=/home" class="abuse-report-modal">
+                        <span class="icon-report"></span>
+                    </a>
+                </div>
+            </li>
+        }
+    }
+</ul>

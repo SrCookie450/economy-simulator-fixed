@@ -1,0 +1,30 @@
+# !!! THIS IS ONLY FOR INTEGRATION OR UNIT TESTING !!!
+services:
+  redis:
+    image: "redis:alpine"
+    expose:
+      - "6379"
+  postgres:
+    image: "postgres:13.3"
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_DB: "roblox_integration_test"
+      POSTGRES_USER: "roblox_integration_test_user"
+      POSTGRES_PASSWORD: "docker"
+  migrations:
+    build:
+      context: ../../
+      dockerfile: Roblox/Roblox.IntegrationTest/docker/migrations.dockerfile
+      network: host
+    depends_on:
+      - postgres
+      - redis
+  integration_test:
+    build:
+      context: ../../
+      dockerfile: Roblox/Roblox.IntegrationTest/docker/run.dockerfile
+      network: host
+    depends_on:
+      - postgres
+      - redis

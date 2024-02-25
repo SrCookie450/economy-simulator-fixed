@@ -1,0 +1,46 @@
+@page "/auth/notapproved"
+@model Roblox.Website.Pages.NotApproved
+
+@{
+    Layout = "Shared/_Layout";
+}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12 col-lg-6 offset-lg-3">
+            <div class="card card-body">
+                <h3>Account Banned</h3>
+                <p class="mb-0">
+                    @if (Model.ban.expiredAt != null)
+                    {
+                        <span>Your account has been temporarily banned from this website for the following reason:</span>
+                    }
+                    else
+                    {
+                        <span>Your account has been permanently banned from this website for the following reason:</span>
+                    }
+                </p>
+                <div class="alert alert-secondary mt-2 mb-2">
+                    <p class="mb-0">@Model.ban.reason</p>
+                    <p class="mb-0 fst-italic mt-4">Ban created: @Model.ban.createdAt.ToString("f")</p>
+                    @if (Model.ban.expiredAt != null)
+                    {
+                        <p class="mb-0 fst-italic mt-1">Ban expiration: @Model.ban.expiredAt.Value.ToString("f")</p>
+                    }
+                </div>
+                @if (Model.ban.canUnlock)
+                {
+                    <p>You can unlock your account by clicking the button below. Further violations of our rules may lead to account deletion.</p>
+                    <form method="POST">
+                        <input type="submit" name="unlockAccount" value="Unlock Account" class="btn btn-success" />
+                        @Html.AntiForgeryToken()
+                    </form>
+                }
+                else
+                {
+                    // replacing the if you make new accs we can ban them at any time zaza with this
+                    <p>If you would like to appeal your ban, contact us through our <a href="https://discord.gg/aCMvJctUPu">Discord Server</a>.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+# to view logs:
+# sudo journalctl -u RobloxWeb.service -f
+[Unit]
+Description=Roblox website service
+After=network.service
+
+[Service]
+ExecStart=/home/website/RobloxWeb/services/Roblox/Roblox.Website/bin/RELEASE/net6.0/Roblox.Website
+LimitNOFILE=900000
+LimitNPROC=900000
+# Required on some systems
+WorkingDirectory=/home/website/RobloxWeb/services/Roblox/Roblox.Website/bin/RELEASE/net6.0/
+Restart=always
+# Restart service after 1 second if service crashes
+RestartSec=1
+# Uncomment to ignore 0 exit code
+# RemainAfterExit=yes
+SyslogIdentifier=RobloxWeb
+User=website
+
+[Install]
+WantedBy=multi-user.target

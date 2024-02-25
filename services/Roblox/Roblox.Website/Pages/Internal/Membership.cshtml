@@ -1,0 +1,42 @@
+@page "/internal/membership"
+@using Roblox.Models.Users
+@model Roblox.Website.Pages.Internal.Membership
+
+@{
+    Layout = "Shared/_Layout";
+}
+
+
+@section MetaTags {
+    <title>Change Membership</title>
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12 col-lg-6 offset-lg-3">
+            <div class="card card-body">
+                <h2>Builders Club Membership</h2>
+                @if (Model.successMessage != null)
+                {
+                    <p class="text-success">@Model.successMessage</p>
+                }
+                <form method="post" autocomplete="off">
+                    <div>
+                        <select class="form-control" name="membershipType">
+                            <option value="@MembershipType.None">None</option>
+                            <option value="@MembershipType.BuildersClub">BC</option>
+                            <option value="@MembershipType.TurboBuildersClub">TBC</option>
+                            <option value="@MembershipType.OutrageousBuildersClub">OBC</option>
+                        </select>
+                        @Html.AntiForgeryToken()
+                    </div>
+                    <input type="submit" class="btn btn-primary mt-4" value="Submit Changes" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.querySelector('select[name="membershipType"]').value = '@Model.existingMembershipType';
+</script>

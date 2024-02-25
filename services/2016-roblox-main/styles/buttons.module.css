@@ -1,0 +1,21 @@
+.legacyButton {
+    font-size: 15px;
+    border: 1px solid #444444;
+    color: #000;
+    /*width: 100%;*/
+    background: linear-gradient(0deg, rgba(224,224,224,1) 0%, rgba(255,255,255,1) 100%);
+}
+
+.legacyButton:hover {
+    background: linear-gradient(0deg, rgba(203,216,255,1) 0%, rgba(255,255,255,1) 100%);
+    color: #000;
+}
+
+.delete {
+    background: red;
+    border-radius: 100%;
+    font-weight: 800;
+    color: #fff;
+    padding: 0 5px;
+    cursor: pointer;
+}

@@ -1,0 +1,31 @@
+@page "/auth/application-check"
+@model Roblox.Website.Pages.Auth.ApplicationCheck
+
+@{
+    Layout = "Shared/_Layout";
+}
+
+@section MetaTags {
+    <title>Application Lookup</title>
+}
+
+<div class="container mt-4 mb-4">
+    <div class="row">
+        <div class="col-12 col-lg-6 offset-lg-3">
+            <div class="card card-body">
+                <h3>View Application Status</h3>
+                <p>If you filled out your application on another browser/computer (or cleared your site data), you can manually paste in your application ID to view its status. If you did not save your application ID, you will have to submit a new application.</p>
+                @if (Model.errorMessage != null)
+                {
+                    <p class="text-danger">@Model.errorMessage</p>
+                }
+                <br />
+                <form method="post">
+                    <input name="applicationId" type="text" class="form-control" placeholder="Application ID" maxlength="128" />
+                    @Html.AntiForgeryToken()
+                    <input type="submit" class="mt-4 btn btn-primary" value="Submit" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

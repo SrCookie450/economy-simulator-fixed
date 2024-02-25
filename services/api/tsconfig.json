@@ -1,0 +1,34 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"lib": [
+			"es2017",
+			"DOM"
+		],
+		"types": [
+			"reflect-metadata",
+			"node"
+		],
+		"removeComments": true,
+		"module": "commonjs",
+		"outDir": "dist",
+		"moduleResolution": "node",
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"sourceMap": false,
+		"declaration": false,
+		"strict": false,
+		"noImplicitAny": false,
+		"strictPropertyInitialization": false,
+		"esModuleInterop": true
+	},
+	"include": [
+		"./src/**/*.ts"
+	],
+	"exclude": [
+		"node_modules",
+		"./public",
+		"dist",
+		"test"
+	]
+}
