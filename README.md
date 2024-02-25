@@ -143,4 +143,4 @@ now you can sign up.
 
 congrats site made
 
-- Made by Deadly (Discord: alexanderkyledunn)
+- Made by Deadly
