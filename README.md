@@ -9,8 +9,11 @@ Do ```sudo apt update``` then after its done do ```sudo apt install redis``` and
 2. get apps
 
 node.js: ```https://nodejs.org/dist/v18.16.1/node-v18.16.1-x64.msi```
+
 postgreSQL: ```https://sbp.enterprisedb.com/getfile.jsp?fileid=1258627```
+
 Dotnet 6: ```https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-6.0.412-windows-x64-installer```
+
 Go lang: ```https://go.dev/dl/go1.20.6.windows-amd64.msi```
 
 3. install
