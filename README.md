@@ -97,8 +97,8 @@ now go to ```services/AssetValidationServiceV2``` and in command do ```go run ma
 now go to ```services/RCCService``` and in command do ```RCCService.exe -console -placeid:1818```
 
 now go to ```services/game-server``` and make a file named config.json in the file paste this
-
-```{
+```
+{
     "rcc": "C:\\Users\\yourusername\\Downloads\\ECS\\services\\RCCService",
     "authorization": "90WGEGNJGWHIWGOI31900H9GIOGI",
     "baseUrl": "http://localhost:5000",
@@ -107,7 +107,8 @@ now go to ```services/game-server``` and make a file named config.json in the fi
     "websiteBotAuth": "UW8U8TU9W9R8RHGRJOGWGOINOOWGNWRNJWWNRJ",
     "thumbnailWebsocketPort": 3189,
     "dockerDisabled": true
-}```
+}
+```
 
 now this gets a little complicated, go into ```services/game-server/scripts```
 
